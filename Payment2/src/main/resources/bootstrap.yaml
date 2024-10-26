@@ -1,0 +1,26 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: payment
+  # Spring CLoud Consul 配置
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+        heartbeat:
+          enabled: true
+      config:
+        enabled: true
+        prefix: config
+        data-key: data
+        profile-separator: '-'
+        format: YAML
+        watch:
+          # 信息在 Consul 上改变之后，等待 20 秒之后生效
+          wait-time: 20
+# consul 默认拿取 config/order/data 下的数据
+# 注意配置Consul的时候，写yaml的时候要用 空格 来分开，而不是 tab！！！

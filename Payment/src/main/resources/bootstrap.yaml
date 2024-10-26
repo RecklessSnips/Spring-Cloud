@@ -1,0 +1,43 @@
+# bootstrap拥有高优先级，会比app context先被载入，所以需要consul先运行
+# 然后从其中获得配置。这就是为什么可以通过 @Value(${})来获取配置的值
+# 注意⚠️⚠️⚠️：如果有多个实例在运行，底下的配置应该相同，只有端口号不同
+# 并且，Consul中的配置名字应该跟本application名字相同，规则如下：
+
+# config/<name>/data
+# config/<name>-prod/data
+# config/<name>-dev/data
+# config/<name>......./data
+# 这个data是一个默认的key，代表在当前这个key底下搜索 yaml/json 数据
+# 可以手动更改key，配置 data-key 并声明key即可，比如: data-key: testKey
+# 注意配置Consul的时候，写yaml的时候要用 空格 来分开，而不是 tab！！！
+server:
+  port: 8080
+
+spring:
+  application:
+    name: payment
+  # Spring CLoud Consul 配置
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        # 以当前名字注册，因为只是端口号不同
+        # 并且会从 config/payment 加载相关配置
+        service-name: ${spring.application.name}
+        heartbeat:
+          enabled: true
+      config:
+        enabled: true
+        # 存储配置的路径前缀，默认值是 config。Consul 会在 config/ 目录下查找配置
+        prefix: config
+        # 查找哪个 Key
+        data-key: data
+        # 根据当前是哪个profile(test, prod, dev, default) 来在 config/payment-prod/ 获取配置
+        # - 是payment-prod的分隔符, 会从 application.yaml 里找设置的事哪个profile
+        profile-separator: '-'
+        format: YAML
+        # 实时刷新
+        watch:
+          # 信息在 Consul 上改变之后，等待 20 秒之后生效
+          wait-time: 20
