@@ -10,3 +10,15 @@ alive: Recklesss-Air 192.168.2.15:8301
 event-clock: 5
 alive: Recklesss-Air 192.168.2.15:8301
 event-clock: 6
+alive: MacBook-Air 192.168.2.53:8301
+event-clock: 7
+alive: MacBook-Air 192.168.2.53:8301
+event-clock: 8
+alive: MacBook-Air 192.168.2.53:8301
+event-clock: 9
+leave
+clock: 1
+alive: MacBook-Air 192.168.2.53:8301
+event-clock: 1
+alive: MacBook-Air 192.168.2.53:8301
+event-clock: 2

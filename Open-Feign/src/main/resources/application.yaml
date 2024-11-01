@@ -1,0 +1,50 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: Open-Feign
+  # Spring CLoud Consul 配置
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+        heartbeat:
+          enabled: true
+  # 开启 Apache HttpClient 5 升级效能
+    openfeign:
+      httpclient:
+        hc5:
+          enabled: true
+    # 开启 circuit breaker，在openfeign下面
+      circuitbreaker:
+        enabled: true
+        group:
+          enabled: true
+
+# 测试：6次访问中的失败率50%以上CircuitBreaker将进入OPEN状态（跳闸）拒绝所有请求
+# 等待五秒以后CircuitBreaker将自动从开启OPEN过度到HALF_OPEN状态，允许一些请求通过以
+# 测试服务是否恢复正常。如果还是异常，CircuitBreaker回到OPEN，如果正常，则CLOSE恢复正常
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        failureRateThreshold: 50 # 设置50%的调用失败概率，超过这个将进入OPEN状态
+        slidingWindowType: COUNT_BASED # 滑动窗口类型
+        slidingWindowSize: 6 # CircuitBreaker 将观察最近的 6 次请求来计算失败率
+        minimumNumberOfCalls: 6 # 只有当调用次数达到或超过 6 次时才会触发熔断
+        automaticTransitionFromOpenToHalfOpenEnabled: true # 默认值是 true。自动从开启过渡到HALF_OPEN
+        waitDurationInOpenState: 5s # CircuitBreaker 进入 OPEN 状态后会保持 5 秒，然后尝试过渡到 HALF_OPEN 状态
+        permittedNumberOfCallsInHalfOpenState: 2 # 这些请求用于测试服务的恢复情况。如果这些请求成功，CircuitBreaker 将关闭熔断（回到 CLOSED 状态）；如果失败，则返回 OPEN 状态
+        recordExceptions:
+          - java.lang.RuntimeException
+          - java.util.concurrent.TimeoutException
+    instances:
+      payment:
+        baseConfig: default
+  timelimiter:
+    instances:
+      payment:
+        timeoutDuration: 4s  # 设置超时时间，如果超过这个，那么就会抛出TimeoutException（比slowCall好用)
