@@ -54,3 +54,12 @@ resilience4j:
         limitForPeriod: 5 # 在一次刷新周期内，最大允许请求次数
         limitRefreshPeriod: 2s # Limiter每隔4秒刷新一次，其中允许处理的最大请求数为 limitForPeriod
         timeout-duration: 1 # 线程默认等待时间。如果在1秒内没有获得许可，请求将会被拒绝
+
+# ============ Zipkin ============
+management:
+  zipkin:
+    tracing:
+      endpoint: http://localhost:9411/api/v2/spans
+  tracing:
+    sampling:
+      probability: 1.0 # 采样率认为0.1（0.1意思是10次只有一次能被记录下来,在这里意思是都记录），值越大收集越及时

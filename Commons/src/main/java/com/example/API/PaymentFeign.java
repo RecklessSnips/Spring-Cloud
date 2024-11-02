@@ -31,4 +31,8 @@ public interface PaymentFeign {
     // 测试 Rate Limiter
     @GetMapping("/pay/ratelimit/{id}")
     String myRateLimiter(@PathVariable Integer id);
+
+    // 测试 Micrometer
+    @GetMapping("/pay/micrometer/{id}")
+    String myMicrometer(@PathVariable Integer id);
 }
