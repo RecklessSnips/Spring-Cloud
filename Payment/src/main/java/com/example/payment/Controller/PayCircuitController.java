@@ -24,4 +24,9 @@ public class PayCircuitController {
         }
         return "Hello! Circuit ID: " + id;
     }
+
+    @GetMapping("/pay/ratelimit/{id}")
+    public String myRateLimiter(@PathVariable Integer id){
+        return "Hello! Rate Limiter: " + id;
+    }
 }

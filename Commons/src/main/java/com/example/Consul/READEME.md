@@ -9,3 +9,7 @@ consul agent -server -bootstrap-expect=1 -data-dir=/Users/Ahsoka/Spring-Cloud/Co
 ```
 consul agent -server -bootstrap-expect=1 -data-dir=/Users/Ahsoka/Spring-Cloud/Commons/src/main/java/com/example/Consul/Data -ui -log-level=DEBUG
 ```
+如果忘记关闭consul，且丢失了它的运行控制台，还可以这样终止
+```
+consul leave
+```

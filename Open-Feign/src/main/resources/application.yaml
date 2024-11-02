@@ -48,3 +48,9 @@ resilience4j:
     instances:
       payment:
         timeoutDuration: 4s  # 设置超时时间，如果超过这个，那么就会抛出TimeoutException（比slowCall好用)
+  ratelimiter:
+    configs:
+      default:
+        limitForPeriod: 5 # 在一次刷新周期内，最大允许请求次数
+        limitRefreshPeriod: 2s # Limiter每隔4秒刷新一次，其中允许处理的最大请求数为 limitForPeriod
+        timeout-duration: 1 # 线程默认等待时间。如果在1秒内没有获得许可，请求将会被拒绝

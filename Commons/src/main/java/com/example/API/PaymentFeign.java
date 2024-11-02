@@ -27,4 +27,8 @@ public interface PaymentFeign {
     // 测试 resilience4J
     @GetMapping("/pay/circuit/{id}")
     String myCircuit(@PathVariable Integer id);
+
+    // 测试 Rate Limiter
+    @GetMapping("/pay/ratelimit/{id}")
+    String myRateLimiter(@PathVariable Integer id);
 }

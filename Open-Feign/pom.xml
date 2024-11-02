@@ -31,6 +31,7 @@
         <httpclient5>5.3.1</httpclient5>
         <feign.hc5>13.2.1</feign.hc5>
         <spring.cloud.resilience4j>3.1.2</spring.cloud.resilience4j>
+        <resilience4j.ratelimiter>2.2.0</resilience4j.ratelimiter>
         <springboot.aop>3.3.5</springboot.aop>
     </properties>
     <dependencies>
@@ -80,6 +81,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
             <version>${springboot.aop}</version>
+        </dependency>
+
+<!--        Rate Limiter-->
+        <dependency>
+            <groupId>io.github.resilience4j</groupId>
+            <artifactId>resilience4j-ratelimiter</artifactId>
+            <version>${resilience4j.ratelimiter}</version>
         </dependency>
 
         <!-- 引入公共package -->
