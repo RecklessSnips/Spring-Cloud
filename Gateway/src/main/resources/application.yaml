@@ -1,0 +1,28 @@
+server:
+  port: 9527
+
+spring:
+  application:
+    name: Gateway
+  # Spring CLoud Consul 配置
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: ${spring.application.name}
+        heartbeat:
+          enabled: true
+    gateway:
+      routes:
+        - id: Order
+#          uri: http://localhost:8081  # 这样就写死了
+          uri: lb://order # 写微服务的名字
+          # 如果满足以下所有的的predicate，才会导向lb://order
+          predicates:
+            #以gateway开头的路径
+            - Path=/gateway/**
+            # 在这个timezone之后才能访问，还有before，between
+            - After=2024-12-02T14:01:10.034116-05:00[America/Toronto]
+#            - Cookie=username, ahsoka # 需要直接通过gateway来请求才会生效
+            - Query=username, \d+ # 请求参数需要带参数名username，值必须是整数

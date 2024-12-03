@@ -19,9 +19,9 @@ public class OrderController {
     private final RestTemplate restTemplate;
 
 //    private static final String PAYMENT_URL = "http://localhost:8080";
-    // 注册服务后不需要写死domain和端口
+    // 注册服务后不需要写死domain和端口, 不要用 static，因为spring不管理static
     @Value("${url.payment}")
-    private static String PAYMENT_URL;
+    private String PAYMENT_URL;
 
     public OrderController(@Autowired RestTemplate restTemplate){
         this.restTemplate = restTemplate;
